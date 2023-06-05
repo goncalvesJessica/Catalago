@@ -2,8 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, Alert, TouchableOpacity, Pressabl
 import { TextInput } from 'react-native-gesture-handler';
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { useEffect } from 'react';
-import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { getFirestore, getDocs, collection, updateDoc , Doc, addDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 const firebaseApp = initializeApp({
@@ -13,13 +12,7 @@ const firebaseApp = initializeApp({
   
   });
 
-
-
-
-
-export default function Cadastrar({ navigator }) {
-    const navigation = useNavigation();
-
+export default function Cadastrar({ navigation }) {
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState("");
@@ -27,10 +20,8 @@ export default function Cadastrar({ navigator }) {
     const [imagem, setImagem] = useState('');
     
 
-    const Salvar = (event) => {
-        console.log('aaaaaaaaaaaa')
-
-        event.preventDefault();
+    const Salvar = async () => {
+     
       
         // Crie uma referência ao nó 'produtos' no Realtime Database
         const db = getFirestore(firebaseApp);
@@ -44,20 +35,21 @@ export default function Cadastrar({ navigator }) {
           descricao: descricao,
           valor: valor,
           quantidade: quantidade,
-          imagem: imagem,
+          //imagem: imagem,
           
         };
       
         // Salve o novo produto no Firebase
-        produtosRef.push(novoProduto)
+        const novosProduto = await addDoc (produtosRef, novoProduto)
           .then(() => {
             // Limpe os campos do formulário após o envio bem-sucedido
             setNome('');
             setDescricao('');
             setValor('');
             setQuantidade('');
-            setImagem('');
+            //setImagem('');
             alert('Produto salvo com sucesso!');
+            console.log('aaaaaaaaaaaa')
           })
           .catch((error) => {
             console.error('Erro ao salvar o produto:', error);

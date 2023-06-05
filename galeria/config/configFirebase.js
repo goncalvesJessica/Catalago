@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Pressable, Text, Image} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, StyleSheet, TouchableOpacity, Pressable, Text, Image, ScrollView, SafeAreaView } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyAeGHNQwupMyl599alphPrf2RWgB7Eqq38",
@@ -11,7 +12,8 @@ const firebaseApp = initializeApp({
 
 });
 
-export const Configu = () => {
+export default function Configu({ navigation }) {
+
   const [produtos, setProdutos] = useState([]);
 
   const db = getFirestore(firebaseApp);
@@ -34,26 +36,28 @@ export const Configu = () => {
   }, [])
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={{ top: 100 }}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={{ top: 40 }}>
         <Text style={styles.texto}>CATALAGO</Text>
 
         {produtos.map(produto => (
-          <View style={styles.lista}>
-          
-             <Image style={styles.imagem} source={{uri: produto.imagem}}/>
+          <TouchableOpacity style={styles.lista} onPress={() => navigation.navigate('Detalhe')}>
+
+            <Image style={styles.imagem} source={{ uri: produto.imagem }} />
             <Text style={styles.textol}>PRODUTO: {produto.nome}</Text>
             <Text style={styles.textol}>DESCRIÇÃO: {produto.descricao}</Text>
             <Text style={styles.textol}>VALOR: {produto.valor},00</Text>
-            
-            <Text style={styles.textol}>QUANTIDADE: {produto.quantidade} DISPONIVEIS</Text>
 
-          </View>
-          
+            <Text style={styles.textol}>QUANTIDADE: {produto.quantidade} DISPONIVEIS</Text>
+            <View>
+
+            </View>
+          </TouchableOpacity>
+
         ))}
 
-      </TouchableOpacity>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 };
 
@@ -73,13 +77,13 @@ const styles = StyleSheet.create({
     left: 150,
 
   },
-  lista:{
+  lista: {
     backgroundColor: 'white',
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     borderRadius: 20,
     paddingVertical: 20,
-    marginBottom:10,
-    height:200,
+    marginBottom: 10,
+    height: 200,
   },
   textol: {
     fontSize: 15,
@@ -89,12 +93,26 @@ const styles = StyleSheet.create({
     color: 'black',
     height: 40,
     left: 150,
-    top:-400,
+    top: -400,
 
   },
-  imagem:{
-    top:-120,
-    padding:50,
-    margin:150,
-right:150  }
+  textoEditar: {
+    fontSize: 15,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'black',
+    left: 200,
+    top: -408,
+    backgroundColor: "#7FFFD4",
+    paddingHorizontal: 14,
+    width: 80,
+    borderRadius: 8,
+  },
+  imagem: {
+    top: -120,
+    padding: 50,
+    margin: 150,
+    right: 150
+  }
 })
