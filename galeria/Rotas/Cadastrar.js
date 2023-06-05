@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { getFirestore, getDocs, collection, updateDoc , Doc, addDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import {uuidv4} from 'uuid'
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAeGHNQwupMyl599alphPrf2RWgB7Eqq38",
@@ -31,6 +32,7 @@ export default function Cadastrar({ navigation }) {
       
         // Crie um novo objeto de produto com os dados do formulário
         const novoProduto = {
+        id: uuidv4(),
           nome: nome,
           descricao: descricao,
           valor: valor,
