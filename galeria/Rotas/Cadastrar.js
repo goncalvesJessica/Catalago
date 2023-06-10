@@ -19,7 +19,7 @@ export default function Cadastrar({ navigation }) {
     const [quantidade, setQuantidade] = useState("");
     const [valor, setValor] = useState('');
     const [imagem, setImagem] = useState('');
-    
+    const [DescricaoCom, setDescricaoCom] = useState('');setDescricaoCom
 
     const Salvar = async () => {
      
@@ -78,6 +78,12 @@ export default function Cadastrar({ navigation }) {
                     onChangeText={setDescricao}
                     value={descricao}
                     placeholder="DESCRIÇÃO DO PRODUTO"
+                />
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setDescricaoCom}
+                    value={descricao}
+                    placeholder="DESCRIÇÃO COMPLETA"
                 />
                 <TextInput
                     style={styles.input}

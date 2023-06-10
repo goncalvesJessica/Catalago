@@ -18,7 +18,9 @@ export default function App() {
         <Stake.Screen name="CameraApp" component={CameraApp} options={{ headerShown: false }} />
         <Stake.Screen name="Cadastrar" component={Cadastrar} options={{ headerShown: false }} />
         <Stake.Screen name="configFirebase" component={Configu} options={{ headerShown: false }} />
-        <Stake.Screen name="Detalhe" component={Detalhe} options={{ headerShown: false }} />
+        <Stake.Screen name="Detalhe"
+         component={Detalhe} 
+         options={{ headerShown: false }}/>
 
       </Stake.Navigator>
     </NavigationContainer>

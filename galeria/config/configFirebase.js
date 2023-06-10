@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Pressable, Text, Image, ScrollView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Image, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -27,6 +27,9 @@ export default function Configu({ navigation }) {
         data.forEach((doc) => {
           produtos.push(JSON.parse(JSON.stringify(doc.data())));
         });
+
+        console.log(produtos)
+
       }).catch((error) => {
         console.error(error);
       });
@@ -41,7 +44,7 @@ export default function Configu({ navigation }) {
         <Text style={styles.texto}>CATALAGO</Text>
 
         {produtos.map(produto => (
-          <TouchableOpacity style={styles.lista} onPress={() => navigation.navigate('Detalhe')}>
+          <TouchableOpacity style={styles.lista} onPress={() => navigation.navigate('Detalhe',{id:produto.id})}>
 
             <Image style={styles.imagem} source={{ uri: produto.imagem }} />
             <Text style={styles.textol}>PRODUTO: {produto.nome}</Text>

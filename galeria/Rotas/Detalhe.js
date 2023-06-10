@@ -1,34 +1,58 @@
 
 import { View, StyleSheet, TouchableOpacity, Pressable, Text } from 'react-native';
 import { TextInput } from "react-native-gesture-handler";
-import React, { useState } from "react";
-import { getFirestore, getDocs, collection, updateDoc , Doc, addDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { getFirestore, getDocs, collection, updateDoc, Doc, addDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAeGHNQwupMyl599alphPrf2RWgB7Eqq38",
     authDomain: "galeria-5da11.firebaseapp.com",
     projectId: "galeria-5da11",
-  
-  });
 
-export default function Detalhe({ navigation }) {
+});
+
+export default function Detalhe({ navigation, route }) {
 
     const [nome, setNome] = useState("");
-    const [id, seId]= useState("");
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState("");
     const [valor, setValor] = useState('');
     const [imagem, setImagem] = useState('');
 
+    useEffect(() => {
 
-    const Editar = async () => {
+        const getProdutos = () => {
 
-        // Crie uma referência ao nó 'produtos' no Realtime Database
-        const db = getFirestore(firebaseApp);
-        const produtosRef = collection(db, "Produto");
+            // navigation.getId().then((response) => {
+            //     // Limpe os campos do formulário após o envio bem-sucedido
+            //     console.log(response)
+            // })
+            //     .catch((error) => {
+            //         console.error('Erro ao salvar o produto:', error);
+            //         alert('Ocorreu um erro ao salvar o produto. Por favor, tente novamente.');
+            //     });
 
-    }
+            console.log(route.params.id)
+
+            // tento que manda esse id para o banco e ele trazer as informações
+        };
+
+        getProdutos();
+    }, [])
+    //const Editar = async () => {
+    //if (Produto.id == ""){
+    //    Alert.alert('Atenção⚠',
+    //    'Informe um código para o produto!');
+    //    return;
+    //}
+    // Crie uma referência ao nó 'produtos' no Realtime Database
+    //const db = getFirestore(firebaseApp);
+    //const produtosRef = collection(db, "Produto");
+
+
+    //}
 
     return (
         <View style={styles.container}>
@@ -64,7 +88,7 @@ export default function Detalhe({ navigation }) {
                         style={styles.inputQ}
                     />
                 </View>
-                <TouchableOpacity style={styles.botaos}>
+                <TouchableOpacity style={styles.botaos} onPress={() => navigation.navigate({ Editar })}>
                     <Text>Editar</Text>
                 </TouchableOpacity>
 
