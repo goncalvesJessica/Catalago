@@ -39,7 +39,6 @@ export default function CameraApp() {
     if (camRef) {
       const data = await camRef.current.takePictureAsync();
       setCapturaFoto(data.uri);
-      console.log(data);
       setOpen(true);
     }
   }

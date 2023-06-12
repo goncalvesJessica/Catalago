@@ -20,7 +20,7 @@ export default function Home({ navigation }) {
 
             <TouchableOpacity style={{top:400}} >
                 <Pressable style={styles.botao} onPress={() => navigation.navigate('configFirebase')}>
-                    <Text style={styles.texto}>CATALAGO</Text>
+                    <Text style={styles.texto}>CATÁLAGO</Text>
                 </Pressable>
 
             </TouchableOpacity>

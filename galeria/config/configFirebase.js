@@ -3,7 +3,7 @@ import { getFirestore, getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-
+import { getAuth } from 'firebase/auth'
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyAeGHNQwupMyl599alphPrf2RWgB7Eqq38",
@@ -11,7 +11,8 @@ const firebaseApp = initializeApp({
   projectId: "galeria-5da11",
 
 });
-
+const auth = getAuth();
+export { auth };
 export default function Configu({ navigation }) {
 
   const [produtos, setProdutos] = useState([]);
@@ -25,10 +26,19 @@ export default function Configu({ navigation }) {
       let produtos = [];
       await getDocs(produtoColletionRef).then((data) => {
         data.forEach((doc) => {
-          produtos.push(JSON.parse(JSON.stringify(doc.data())));
+          const produto = {
+            id: doc.id,
+            nome: doc.data().nome,
+            descricao: doc.data().descricao,
+            quantidade: doc.data().quantidade,
+            valor: doc.data().valor,
+            imagem: doc.data().imagem,
+          }
+          
+          produtos.push(produto);
+         
         });
 
-        console.log(produtos)
 
       }).catch((error) => {
         console.error(error);
@@ -44,7 +54,7 @@ export default function Configu({ navigation }) {
         <Text style={styles.texto}>CATALAGO</Text>
 
         {produtos.map(produto => (
-          <TouchableOpacity style={styles.lista} onPress={() => navigation.navigate('Detalhe',{id:produto.id})}>
+          <TouchableOpacity style={styles.lista} onPress={() => navigation.navigate('EditarItem',produto)}>
 
             <Image style={styles.imagem} source={{ uri: produto.imagem }} />
             <Text style={styles.textol}>PRODUTO: {produto.nome}</Text>

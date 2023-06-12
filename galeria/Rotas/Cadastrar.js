@@ -1,64 +1,100 @@
-import { StyleSheet, Text, View, SafeAreaView, Alert, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Pressable, Alert, SafeAreaView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { getFirestore, getDocs, collection, updateDoc , Doc, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import {uuidv4} from 'uuid'
+import { uuidv4 } from 'uuid'
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAeGHNQwupMyl599alphPrf2RWgB7Eqq38",
     authDomain: "galeria-5da11.firebaseapp.com",
     projectId: "galeria-5da11",
-  
-  });
+
+});
 
 export default function Cadastrar({ navigation }) {
+
+
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState("");
     const [valor, setValor] = useState('');
     const [imagem, setImagem] = useState('');
-    const [DescricaoCom, setDescricaoCom] = useState('');setDescricaoCom
+   
 
     const Salvar = async () => {
-     
-      
+
+        
         // Crie uma referência ao nó 'produtos' no Realtime Database
         const db = getFirestore(firebaseApp);
         const produtosRef = collection(db, "Produto");
 
-       
-      
+
+        
         // Crie um novo objeto de produto com os dados do formulário
         const novoProduto = {
-        id: uuidv4(),
-          nome: nome,
-          descricao: descricao,
-          valor: valor,
-          quantidade: quantidade,
-          //imagem: imagem,
-          
+
+           // id: uuidv4(),
+           
+            nome: nome,
+            descricao: descricao,
+            valor: valor,
+            quantidade: quantidade,
+            imagem: imagem,
+            
         };
-      
+      if (novoProduto.nome === '') {
+            Alert.alert('Atenção',
+                'O campo nome  é obrigatório')
+
+            return
+
+        }
+        if (novoProduto.descricao === '') {
+            Alert.alert('Atenção',
+                'O campo nome  é descrição')
+
+            return
+
+        }
+        if (parseFloat(novoProduto.valor) <= 0) {
+            Alert.alert('Atenção',
+                'O valor do item deve ser informado')
+
+            return
+        }
+        if (parseFloat(novoProduto.quantidade) <= 0) {
+            Alert.alert('Atenção',
+                'A quantidade em estoque é inválida')
+
+            return
+        }
+        if (novoProduto.imagem === '') {
+            Alert.alert('Atenção',
+            'O campo url  é descrição')
+
+        return
+
+        }
+
         // Salve o novo produto no Firebase
-        const novosProduto = await addDoc (produtosRef, novoProduto)
-          .then(() => {
-            // Limpe os campos do formulário após o envio bem-sucedido
-            setNome('');
-            setDescricao('');
-            setValor('');
-            setQuantidade('');
-            //setImagem('');
-            alert('Produto salvo com sucesso!');
-            console.log('aaaaaaaaaaaa')
-          })
-          .catch((error) => {
-            console.error('Erro ao salvar o produto:', error);
-            alert('Ocorreu um erro ao salvar o produto. Por favor, tente novamente.');
-          });
-      };
-      
+        const novosProduto = await addDoc(produtosRef, novoProduto)
+            .then(() => {
+                // Limpe os campos do formulário após o envio bem-sucedido
+                setNome('');
+                setDescricao('');
+                setValor('');
+                setQuantidade('');
+                setImagem('');
+                alert('Produto salvo com sucesso!');
+                
+            })
+            .catch((error) => {
+                console.error('Erro ao salvar o produto:', error);
+                alert('Ocorreu um erro ao salvar o produto. Por favor, tente novamente.');
+            });
+    };
+
     return (
 
 
@@ -66,7 +102,7 @@ export default function Cadastrar({ navigation }) {
             <View style={styles.cadastro}>
                 <Text style={styles.textoC}>CADASTRO </Text>
             </View>
-            <View style={{ top: 200 }}>
+            <SafeAreaView style={{ top: 200 }}>
                 <TextInput
                     style={styles.input}
                     onChangeText={setNome}
@@ -79,12 +115,7 @@ export default function Cadastrar({ navigation }) {
                     value={descricao}
                     placeholder="DESCRIÇÃO DO PRODUTO"
                 />
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setDescricaoCom}
-                    value={descricao}
-                    placeholder="DESCRIÇÃO COMPLETA"
-                />
+                
                 <TextInput
                     style={styles.input}
                     onChangeText={setValor}
@@ -97,6 +128,16 @@ export default function Cadastrar({ navigation }) {
                     value={quantidade}
                     placeholder="QUANTIDADE"
                     keyboardType="numeric" />
+                
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setImagem}
+                    value={imagem}
+                    placeholder="URL "
+                     />
+                
+                
+                <View></View>
                 <View>
 
                 </View>
@@ -106,7 +147,7 @@ export default function Cadastrar({ navigation }) {
                     </Pressable>
 
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
 
             <View>
                 <TouchableOpacity style={{ top: 250 }}>
@@ -142,7 +183,7 @@ const styles = StyleSheet.create({
         margin: 15,
         borderWidth: 1,
         padding: 10,
-        marginTop: 10,
+        marginTop: -5,
         borderRadius: 9,
     },
     botao: {
